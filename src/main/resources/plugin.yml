@@ -1,0 +1,9 @@
+name: Ill-Template #TODO
+main: net.illusion.template.TemplatePlugin #TODO
+author: Illusion
+
+version: 1.0
+api-version: 1.13
+
+commands:
+
