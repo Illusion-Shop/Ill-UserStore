@@ -24,11 +24,15 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT")
 
     // OTHERS
-    compileOnly "net.illusion:core:1.0"
+    compileOnly "net.illusion:core:1.4"
 }
 
 compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+jar {
+    destinationDirectory.set(file('D:\\Project\\minecraft\\Illusion\\Servers\\1.19.2\\plugins'))
 }

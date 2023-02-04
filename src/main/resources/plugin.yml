@@ -1,9 +1,11 @@
-name: Ill-Template #TODO
-main: net.illusion.template.TemplatePlugin #TODO
+name: Ill-UserStore #TODO
+main: net.illusion.userstore.UserStorePlugin #TODO
 author: Illusion
+description: 유저상점 플러그인
+website: https://discord.gg/illusion-shop
 
 version: 1.0
 api-version: 1.13
 
 commands:
-
+  유저상점:
