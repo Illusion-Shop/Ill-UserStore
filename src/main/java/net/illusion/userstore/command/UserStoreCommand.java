@@ -1,8 +1,10 @@
 package net.illusion.userstore.command;
 
+import net.illusion.userstore.UserStorePlugin;
 import net.illusion.userstore.data.StoreMapData;
 import net.illusion.userstore.gui.StoreGUI;
 import net.illusion.userstore.utils.StoreUtil;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,34 +14,34 @@ public class UserStoreCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (!(sender instanceof Player)) return false;
 
         Player player = (Player) sender;
 
         if (args.length == 0) {
             StoreGUI storeGUI = new StoreGUI();
-            storeGUI.openInventory(player);
+            storeGUI.updateInventory(player);
+
             StoreMapData.storeMap.put(player.getUniqueId(), storeGUI);
-            return true;
+            return false;
         }
+        StoreGUI storeGUI = new StoreGUI();
 
         switch (args[0]) {
             case "등록":
-
                 if (args.length == 1) {
-                    player.sendMessage("돈 입력해~ ");
-                    return true;
+                    player.sendMessage(UserStorePlugin.prefix + ChatColor.RED + " 돈을 입력해주세요.");
+                    return false;
                 }
 
                 if (args.length == 2) {
-                    player.sendMessage("양 입력해~ ");
-                    return true;
+                    player.sendMessage(UserStorePlugin.prefix + ChatColor.RED + " 양을 입력해주세요.");
+                    return false;
                 }
 
                 if (args.length != 3) {
-                    player.sendMessage("잘못된 명령어 입니다!");
-                    return true;
+                    player.sendMessage(UserStorePlugin.prefix + ChatColor.RED + " 잘못된 명령어입니다.");
+                    return false;
                 }
 
                 byte amount;
@@ -48,12 +50,22 @@ public class UserStoreCommand implements CommandExecutor {
                 try {
                     amount = Byte.parseByte(args[1]);
                     price = Long.parseLong(args[2]);
-
-                    StoreUtil.addItemStacks(player, amount, price);
                 } catch (NumberFormatException e) {
-                    player.sendMessage("응 정수^^");
+                    player.sendMessage(UserStorePlugin.prefix + ChatColor.RED + " 정수를 입력하세요.");
+                    return false;
                 }
-                break;
+
+                storeGUI.addItemStacks(player, amount, price);
+                StoreUtil.updateInventory(player);
+                return true;
+            case "관리":
+                storeGUI.updateInventory(player);
+
+                if (args.length != 1) {
+                    player.sendMessage("잘못된 명령어 입니다.");
+                    return false;
+                }
+                return true;
         }
         return false;
     }

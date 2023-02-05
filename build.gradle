@@ -7,6 +7,7 @@ version '1.0'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
     maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
     maven {
         url = "http://localhost:8081/repository/maven-public/"
@@ -24,7 +25,9 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT")
 
     // OTHERS
-    compileOnly "net.illusion:core:1.4"
+    compileOnly "net.illusion:core:1.6"
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+
 }
 
 compileJava.options.encoding = 'UTF-8'
