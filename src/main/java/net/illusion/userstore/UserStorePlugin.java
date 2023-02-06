@@ -25,7 +25,7 @@ public class UserStorePlugin extends JavaPlugin {
 
     public static Config config, store;
 
-    public static String prefix = ChatColor.GRAY + Gradient.rgbGradient("[UserStore]",net.md_5.bungee.api.ChatColor.of(new Color(219, 36, 0)).getColor(), net.md_5.bungee.api.ChatColor.of(new Color(25, 84, 249)).getColor()  , new Gradient());
+    public static String prefix;
 
     @Override
     public void onEnable() {
@@ -60,6 +60,9 @@ public class UserStorePlugin extends JavaPlugin {
         // COMMAND
         getCommand("유저상점").setExecutor(new UserStoreCommand());
         getCommand("유저상점").setTabCompleter(new UserStoreTab());
+
+        prefix = ChatColor.translateAlternateColorCodes('&',
+                UserStorePlugin.config.getConfig().getString("prefix"));
     }
 
     private boolean setupEconomy() {

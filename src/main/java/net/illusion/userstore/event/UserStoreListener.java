@@ -27,43 +27,51 @@ public class UserStoreListener implements Listener {
         ItemStack itemStack = event.getCurrentItem();
         int slot = event.getSlot();
 
-        if (itemStack == null && !StoreMapData.storeMap.containsKey(player.getUniqueId())) {
-            return;
-        }
         if (StoreUtil.isStoreGuiInventory(inv)) {
+            if (!StoreMapData.storeMap.containsKey(player.getUniqueId())) {
+                event.setCancelled(true);
+                return;
+            }
             StoreGUI storeGUI = StoreMapData.storeMap.get(player.getUniqueId());
+
+            if (storeGUI == null) {
+                event.setCancelled(true);
+                return;
+            }
+
+            if (slot == 50) {
+                storeGUI.nextPage(player);
+                event.setCancelled(true);
+            }
+
+            if (slot == 48) {
+                storeGUI.previousPage(player);
+                event.setCancelled(true);
+            }
+
             ItemStack select;
 
             try {
                 select = storeGUI.getCURRENT_ITEMS().get(event.getSlot());
-            } catch (IndexOutOfBoundsException e) {
-                return;
-            }
-
-            if (slot < 48) {
-                if (player.isOp() && event.isShiftClick()) {
-                    StoreUtil.removeItemStacks(storeGUI, player, select);
-                    event.setCancelled(true);
-                    return;
+                if (slot < 48) {
+                    if (player.isOp() && event.isShiftClick()) {
+                        StoreUtil.removeItemStacks(storeGUI, player, select);
+                        event.setCancelled(true);
+                        return;
+                    }
+                    if (select != null) {
+                        CheckGUI checkGUI = new CheckGUI();
+                        checkGUI.setCURRENT_PAGE(storeGUI.getCURRENT_PAGE());
+                        checkGUI.openInventory(player, select);
+                        StoreMapData.checkMap.put(player.getUniqueId(), checkGUI);
+                        return;
+                    }
                 }
-
-                if (select != null) {
-                    CheckGUI checkGUI = new CheckGUI();
-                    checkGUI.openInventory(player, select);
-                    StoreMapData.checkMap.put(player.getUniqueId(), checkGUI);
-                }
-                return;
-            }
-            if (slot == 50) {
-                storeGUI.nextPage(player);
+            } catch (Exception e) {
                 event.setCancelled(true);
                 return;
             }
-            if (slot == 48) {
-                storeGUI.previousPage(player);
-                event.setCancelled(true);
-                return;
-            }
+
             return;
         }
 
@@ -90,11 +98,14 @@ public class UserStoreListener implements Listener {
         Inventory inv = event.getInventory();
 
         if (StoreUtil.isCheckGuiInventory(inv)) {
+            CheckGUI checkGUI = StoreMapData.checkMap.get(player.getUniqueId());
+
             StoreGUI storeGUI = new StoreGUI();
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    storeGUI.updateInventory(player);
+
+                    storeGUI.updateInventory(checkGUI.getCURRENT_PAGE(), player);
                     StoreMapData.storeMap.put(player.getUniqueId(), storeGUI);
                 }
             }.runTaskLater(UserStorePlugin.getPlugin(), 1);

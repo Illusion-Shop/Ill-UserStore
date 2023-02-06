@@ -54,7 +54,7 @@ public class UserStoreCommand implements CommandExecutor {
                     player.sendMessage(UserStorePlugin.prefix + ChatColor.RED + " 정수를 입력하세요.");
                     return false;
                 }
-
+                //TODO 유저가 업로드를 할 시, 이미 오픈되어있는 유저들을 불러와
                 storeGUI.addItemStacks(player, amount, price);
                 StoreUtil.updateInventory(player);
                 return true;

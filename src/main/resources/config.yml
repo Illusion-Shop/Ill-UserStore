@@ -1,0 +1,26 @@
+size: 6 #GUI 사이즈
+
+prefix: "&f[&e!&f]"
+
+message:
+  notEnoughMoney: "{prefix} &c충분한 돈을 가지고 있지 않습니다"
+  notEnoughInventory: "{prefix} &c인벤토리를 비워 주세요!"
+  purchase: "{prefix} {name}&7+{amount} &f아이템을 &7{price} &f가격에 구매했습니다"
+
+  sell: "{prefix} {name}&7+{amount} 아이템을 &7{price} &f가격에 판매 하였습니다"
+
+
+item:
+  sell:
+    lore: # 아이템 로어
+      - ""
+      - "&e→ §f판매자 {seller}"
+      - "&e→ §f가격 {price}"
+      - ""
+  check:
+    lore: # 아이템 로어
+      - ""
+      - "&e→ §f판매자 {seller}"
+      - "&e→ §f가격 {price}"
+      - ""
+      - "&7클릭하여 구매"
