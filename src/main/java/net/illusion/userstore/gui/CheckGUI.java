@@ -1,5 +1,7 @@
 package net.illusion.userstore.gui;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.illusion.core.util.item.PDCData;
 import net.illusion.userstore.UserStorePlugin;
 import net.illusion.userstore.data.MessageData;
@@ -22,23 +24,21 @@ public class CheckGUI implements InventoryHolder {
 
     private Inventory inv;
 
-    private byte amount = 1;
-
-    private int CURRENT_PAGE;
-
     private ItemStack itemStack;
+    @Getter
+    @Setter
+    private StoreGUI storeGUI;
 
-    public CheckGUI() {
-        inv = Bukkit.createInventory(this, 54, "구매 설정");
-    }
 
     public void openInventory(Player player, ItemStack itemStack) {
         this.itemStack = itemStack;
 
+        inv = Bukkit.createInventory(this, 54, "구매 설정");
+
         ItemStack clone = itemStack.clone();
         ItemMeta itemMeta = clone.getItemMeta();
 
-        List<String> result = MessageData.getCheckLore("item.check.lore", amount, clone);
+        List<String> result = MessageData.getCheckLore("item.check.lore", (byte) itemStack.getAmount(), clone);
 
         itemMeta.setLore(result);
 
@@ -46,10 +46,6 @@ public class CheckGUI implements InventoryHolder {
 
         inv.setItem(22, clone);
 
-        if (amount + 1 > itemStack.getAmount()) {
-            player.openInventory(inv);
-            return;
-        }
         player.openInventory(inv);
     }
 
@@ -62,10 +58,14 @@ public class CheckGUI implements InventoryHolder {
 
         List<ItemStack> itemStacks = StoreUtil.getItemStacks();
 
-        if (itemStacks.contains(itemStack)) {
-            PDCData storage = new PDCData(UserStorePlugin.getPlugin());
+        for (ItemStack items : itemStacks) {
+            if (items != itemStack) continue;
 
-            if (!eco.has(player, storage.getLong(itemStack, "price"))) {
+            PDCData storage = new PDCData(UserStorePlugin.getPlugin());
+            long amount = storage.getLong(itemStack, "price");
+
+            if (!eco.has(player, amount)) {
+                eco.withdrawPlayer(player, amount);
                 player.sendMessage(MessageData.notEnoughMoney("message.notEnoughMoney"));
                 return false;
             }
@@ -88,19 +88,10 @@ public class CheckGUI implements InventoryHolder {
 
             player.closeInventory();
             return true;
-        } else {
-            player.sendMessage("해당 아이템은 존재하지 않습니다.");
-            return false;
         }
+        return false;
     }
 
-    public void setCURRENT_PAGE(int CURRENT_PAGE) {
-        this.CURRENT_PAGE = CURRENT_PAGE;
-    }
-
-    public int getCURRENT_PAGE() {
-        return CURRENT_PAGE;
-    }
 
     @NotNull
     @Override

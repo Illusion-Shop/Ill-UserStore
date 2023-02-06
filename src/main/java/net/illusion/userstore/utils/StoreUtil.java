@@ -94,6 +94,7 @@ public class StoreUtil {
             replaceItem(storeGUI.getCURRENT_ITEMS(), storeGUI.getInventory(), storeGUI.getCURRENT_PAGE(), storeGUI.getMAX_PAGE());
 
             storeGUI.setMAX_PAGE((StoreUtil.getItemStacks().size() / 45) + 1);
+
             InventoryUpdate.updateInventory(UserStorePlugin.getPlugin(), player, "유저 상점 페이지 " + storeGUI.getCURRENT_PAGE() + "/" + storeGUI.getMAX_PAGE());
 
         });

@@ -18,12 +18,8 @@ public class UserStoreTab implements TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             List<String> newReturn = new ArrayList<>();
-            Player player = (Player) sender;
             switch (args.length) {
                 case 1:
-                    if (player.isOp())
-                        newReturn.add("관리");
-
                     newReturn.add("등록");
                     break;
 

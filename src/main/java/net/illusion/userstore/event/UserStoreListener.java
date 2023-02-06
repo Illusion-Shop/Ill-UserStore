@@ -27,17 +27,14 @@ public class UserStoreListener implements Listener {
         ItemStack itemStack = event.getCurrentItem();
         int slot = event.getSlot();
 
+
         if (StoreUtil.isStoreGuiInventory(inv)) {
             if (!StoreMapData.storeMap.containsKey(player.getUniqueId())) {
+                System.out.println("test");
                 event.setCancelled(true);
                 return;
             }
             StoreGUI storeGUI = StoreMapData.storeMap.get(player.getUniqueId());
-
-            if (storeGUI == null) {
-                event.setCancelled(true);
-                return;
-            }
 
             if (slot == 50) {
                 storeGUI.nextPage(player);
@@ -53,16 +50,20 @@ public class UserStoreListener implements Listener {
 
             try {
                 select = storeGUI.getCURRENT_ITEMS().get(event.getSlot());
+
                 if (slot < 48) {
                     if (player.isOp() && event.isShiftClick()) {
                         StoreUtil.removeItemStacks(storeGUI, player, select);
                         event.setCancelled(true);
                         return;
                     }
+
                     if (select != null) {
                         CheckGUI checkGUI = new CheckGUI();
-                        checkGUI.setCURRENT_PAGE(storeGUI.getCURRENT_PAGE());
+
+//                        checkGUI.getStoreGUI().setCURRENT_PAGE(storeGUI.getCURRENT_PAGE());
                         checkGUI.openInventory(player, select);
+                        checkGUI.setStoreGUI(storeGUI);
                         StoreMapData.checkMap.put(player.getUniqueId(), checkGUI);
                         return;
                     }
@@ -104,8 +105,7 @@ public class UserStoreListener implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-
-                    storeGUI.updateInventory(checkGUI.getCURRENT_PAGE(), player);
+                    storeGUI.updateInventory(checkGUI.getStoreGUI().getCURRENT_PAGE(), player);
                     StoreMapData.storeMap.put(player.getUniqueId(), storeGUI);
                 }
             }.runTaskLater(UserStorePlugin.getPlugin(), 1);
