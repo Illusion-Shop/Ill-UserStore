@@ -36,7 +36,6 @@ public class StoreGUI implements InventoryHolder {
         inv = Bukkit.createInventory(this, 54, "유저 상점 페이지 " + CURRENT_PAGE + "/" + MAX_PAGE);
     }
 
-
     public void updateInventory(Player player) {
         this.CURRENT_ITEMS.clear();
         StoreUtil.replaceItem(CURRENT_ITEMS, inv, CURRENT_PAGE, MAX_PAGE);
@@ -58,7 +57,6 @@ public class StoreGUI implements InventoryHolder {
 
         if (CURRENT_PAGE != 1)
             StoreUtil.newItemStack("이전 페이지", Material.ARROW, 1, Arrays.asList(""), 48, inv);
-
     }
 
     public void nextPage(Player player) {

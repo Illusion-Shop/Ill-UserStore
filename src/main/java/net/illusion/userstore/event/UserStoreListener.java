@@ -1,6 +1,7 @@
 package net.illusion.userstore.event;
 
 import net.illusion.userstore.UserStorePlugin;
+import net.illusion.userstore.data.MessageData;
 import net.illusion.userstore.data.StoreMapData;
 import net.illusion.userstore.gui.CheckGUI;
 import net.illusion.userstore.gui.StoreGUI;
@@ -21,10 +22,8 @@ public class UserStoreListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player)) return;
 
         Player player = (Player) event.getWhoClicked();
-
         Inventory inv = event.getClickedInventory();
 
-        ItemStack itemStack = event.getCurrentItem();
         int slot = event.getSlot();
 
 
@@ -61,7 +60,6 @@ public class UserStoreListener implements Listener {
                     if (select != null) {
                         CheckGUI checkGUI = new CheckGUI();
 
-//                        checkGUI.getStoreGUI().setCURRENT_PAGE(storeGUI.getCURRENT_PAGE());
                         checkGUI.openInventory(player, select);
                         checkGUI.setStoreGUI(storeGUI);
                         StoreMapData.checkMap.put(player.getUniqueId(), checkGUI);
@@ -83,6 +81,9 @@ public class UserStoreListener implements Listener {
             if (event.getSlot() == 22) {
                 if (checkGUI.purchase(player)) {
                     StoreUtil.updateInventory(player);
+                    player.closeInventory();
+                } else {
+                    player.sendMessage(UserStorePlugin.prefix + " &c해당 아이템은 존재하지 않습니다.");
                     player.closeInventory();
                 }
             }

@@ -7,7 +7,6 @@ import net.illusion.userstore.data.StoreMapData;
 import net.illusion.userstore.gui.CheckGUI;
 import net.illusion.userstore.gui.StoreGUI;
 import net.illusion.userstore.packet.InventoryUpdate;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import org.bukkit.entity.Player;
@@ -44,9 +43,9 @@ public class StoreUtil {
 
                     List<String> result = MessageData.getSellLore("item.sell.lore", clone);
                     List<String> lore = itemMeta.getLore();
+
                     if (lore != null)
                         result.addAll(lore);
-
 
                     itemMeta.setLore(result);
                     clone.setItemMeta(itemMeta);
@@ -54,7 +53,6 @@ public class StoreUtil {
                     inv.setItem(slot++, clone);
                     CURRENT_ITEMS.add(itemStack);
                 }
-
             }
             if (MAX_PAGE > 1 && CURRENT_PAGE != MAX_PAGE)
                 StoreUtil.newItemStack("다음 페이지", Material.ARROW, 1, Arrays.asList(""), 50, inv);

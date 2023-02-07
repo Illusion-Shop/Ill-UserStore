@@ -79,6 +79,7 @@ public class CheckGUI implements InventoryHolder {
 
             storage.removeNBT(itemStack, "price");
             storage.removeNBT(itemStack, "uuid");
+
             player.getInventory().addItem(itemStack);
 
             itemStacks.remove(itemStack);
